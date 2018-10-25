@@ -7,7 +7,7 @@
 """
 #!/usr/bin/python
 
-import os			#Test
+import os
 import sys
 import time
 
@@ -34,17 +34,66 @@ def find_files(path):
 
 def vcs_parser(files):
 	content = []
+	listNom=[]
+	listSalle=[]
+	listMod=[]
+	listStart=[]
+	listEnd=[]
+
 	for x in files:
 		fileToRead = open(x, "r")
-		content.append(fileToRead.read())
-	cpt = 0
-	for i in content:
-		content[cpt] = i.split("BEGIN:VEVENT")
-	print(content)
-		
-		
+		content = fileToRead.read()
 
-		
+		for l in content:
+			print(l)
+			lsp=l.split('\n')
+			nom=lsp[0]
+			nomsp=nom.split(';')
+			if "DESCRIPTION" in nomsp:
+				nomsp=nom.split(':')
+				listNom.append(nomsp[3][:-3])
+
+		for l in content:
+			lsp=l.split('\n')
+			salle=lsp[0]
+			sallesp=salle.split(':')
+			if "LOCATION" in sallesp:
+				listSalle.append(sallesp[1])
+
+		for l in content:
+			lsp=l.split('\n')
+			module=lsp[0]
+			modulesp=module.split(':')
+			if "SUMMARY" in modulesp:
+				# print(modulesp[1])
+				listMod.append(modulesp[1])
+
+		for l in content :
+			lsp=l.split('\n')
+			Start=lsp[0]
+			Startsp=Start.split(':')
+			if "DTSTART" in Startsp[0]:
+				listStart.append(Startsp[1])
+
+		for l in content:
+			lsp=l.split("\n")
+			End=lsp[0]
+			Endsp=End.split(';')
+			if "DTEND" in Endsp[0]:
+				Endsp=End.split(':')
+				listEnd.append(Endsp[1])
+
+	parsedContent = []
+	parsedContent.append(listNom)
+	parsedContent.append(listSalle)
+	parsedContent.append(listMod)
+	parsedContent.append(listStart)
+	parsedContent.append(listEnd)
+	print(parsedContent)
+	
+	return parsedContent
+
+
 ############# MAIN ###############
 
 path = input("Veuillez entrer le chemin du dossier contenant les fichiers VCS : ")

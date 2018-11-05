@@ -16,16 +16,16 @@ def find_files(path):
 	tmpFilesNames = open("tmpFilesNames.txt", "r")
 	filesNames = tmpFilesNames.read()
 	tmpFilesNames.close()
-	
+
 	if len(filesNames) == 0:
-		print ("Aucun fichier CVS n'a été trouvé dans ce dossier, veuillez rentrer un chemin de dossier valide")
+		print("Aucun fichier CVS n'a été trouvé dans ce dossier, veuillez rentrer un chemin de dossier valide")
 		sys.exit()
-		
+
 	files = []
 	files = filesNames.split("\n")
 	files = [i for i in files if i != '']
 	path = path+"/"
-	
+
 	cpt = 0
 	for x in files:
 		files[cpt] = path+x
@@ -41,11 +41,8 @@ def vcs_parser(files):
 	listEnd=[]
 
 	for x in files:
-		fileToRead = open(x, "r")
-		content = fileToRead.read()
-
+		content = open(x, "r")
 		for l in content:
-			print(l)
 			lsp=l.split('\n')
 			nom=lsp[0]
 			nomsp=nom.split(';')
@@ -53,6 +50,7 @@ def vcs_parser(files):
 				nomsp=nom.split(':')
 				listNom.append(nomsp[3][:-3])
 
+		content = open(x, "r")
 		for l in content:
 			lsp=l.split('\n')
 			salle=lsp[0]
@@ -60,14 +58,15 @@ def vcs_parser(files):
 			if "LOCATION" in sallesp:
 				listSalle.append(sallesp[1])
 
+		content = open(x, "r")
 		for l in content:
 			lsp=l.split('\n')
 			module=lsp[0]
 			modulesp=module.split(':')
 			if "SUMMARY" in modulesp:
-				# print(modulesp[1])
 				listMod.append(modulesp[1])
 
+		content = open(x, "r")
 		for l in content :
 			lsp=l.split('\n')
 			Start=lsp[0]
@@ -75,6 +74,7 @@ def vcs_parser(files):
 			if "DTSTART" in Startsp[0]:
 				listStart.append(Startsp[1])
 
+		content = open(x, "r")
 		for l in content:
 			lsp=l.split("\n")
 			End=lsp[0]
